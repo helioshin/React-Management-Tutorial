@@ -1,6 +1,6 @@
 ## Management System
 
-본 프로젝트는 고객관리시스템입니다.
+본 프로젝트는 리엑트 스터디를 위한 (예제)고객관리시스템 입니다.
 
 # Getting Started with Create React App
 
