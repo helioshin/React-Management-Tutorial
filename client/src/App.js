@@ -19,38 +19,29 @@ const styles = theme => ({
   table: {
     minWidth: 1080
   }
-})
-
-const customers = [
-  {
-    'id': 1,
-    'image': 'https://placeimg.com/64/64/1',
-    'name': '홍길동',
-    'birthday': '921212',
-    'gender': 'male',
-    'job': 'student'
-  },
-  {
-    'id': 2,
-    'image': 'https://placeimg.com/64/64/2',
-    'name': '조자룡',
-    'birthday': '910102',
-    'gender': 'male',
-    'job': 'student'
-  },
-  {
-    'id': 3,
-    'image': 'https://placeimg.com/64/64/3',
-    'name': '관우',
-    'birthday': '900321',
-    'gender': 'male',
-    'job': 'student'
-  }
-];
+});
 
 class App extends Component {
-  render(){
 
+  state = {
+    customers: ""
+  }
+  //컴포넌트 마운트가 끝난 이후 호출되는 내장함수
+  componentDidMount() {
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err));
+  }
+  //고객정보 비동기 요청
+  callApi = async() => {
+    //localhost의 하기 주소로 비동기로 요청
+    const response = await fetch('/api/customers');
+    //요청 받은 데이터를 json형태로 추출
+    const body = await response.json();
+    return body;
+  }
+
+  render(){
     const { classes } = this.props;
     return(
       <Paper className={classes.root}>
@@ -67,7 +58,7 @@ class App extends Component {
           </TableHead>
 
           <TableBody>
-              {customers.map(c => {
+              {this.state.customers ? this.state.customers.map(c => {
                 return(
                   <Customer
                     key = {c.id}
@@ -79,7 +70,7 @@ class App extends Component {
                     job = {c.job}
                   / >
                 );
-              })
+              }) : "데이터 로딩중 입니다."
             }
           </TableBody>
         </Table>
